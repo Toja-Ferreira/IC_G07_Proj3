@@ -49,8 +49,10 @@ class fcm
          * @brief Function that loads an empty model structure with information of an existing model saved in a .txt file in memory
          * @param filename path of text file where the model is stored
          * @param model reference to empty model data structure where the read information will be stored
+         * @param orderM reference to variable where order of the model will be stored
+         * @param alphaM reference to variable where smoothing parameter of the model will be stored
          */
-        void readModel(char *filename, map<string, map<char, int>> &model);
+        void readModel(char *filename, map<string, map<char, int>> &model, int &orderM, double &alphaM);
 
         /**
          * @brief Function that calculates the entropy of a given finite-context model
@@ -60,7 +62,7 @@ class fcm
         double calculateModelEntropy(map<string, map<char, int>> model);
 
         /**
-         * @brief Function that reads the next character of a file, ignoring new lines and tabs
+         * @brief Auxiliary function that reads the next character of a file, ignoring new lines and tabs
          * @param ifs reference to input file stream
          * @param c pointer to where character to be read will be stored
          */

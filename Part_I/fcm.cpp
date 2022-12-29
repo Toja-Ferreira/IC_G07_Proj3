@@ -40,8 +40,8 @@ void fcm::loadModel(char *filename, char toSave, map<string, map<char, int>> *em
         filename = filename + lastSlash + 1;
     }
 
-    cout << "-----------------------------------------------------------------------------" << endl;
-    cout << "Analysing file: " << filename << "\n"
+    cout << "\n-----------------------------------------------------------------------------\n"
+         << "Analysing file: " << filename << "\n"
          << endl;
 
     // Initialize model in the form of <context, <next char, count>>
@@ -122,11 +122,11 @@ void fcm::saveModel(char *filename, map<string, map<char, int>> model)
     // Write parameters to file in the form <order k>,<alpha>
     outfile << this->k << ',' << this->alpha;
 
-    // Write model to file in the form <context>:   <next char>-<count>
+    // Write model to file in the form <context>   <next char>-<count>   <next char>-<count>
     for (auto context : model)
     {
         outfile << '\n'
-                << context.first << ':';
+                << context.first;
 
         for (auto nextChar : context.second)
         {
@@ -139,7 +139,7 @@ void fcm::saveModel(char *filename, map<string, map<char, int>> model)
          << endl;
 }
 
-void fcm::readModel(char *filename, map<string, map<char, int>> &model)
+void fcm::readModel(char *filename, map<string, map<char, int>> &model, int &orderM, double &alphaM)
 {
     // Open text file to be read
     ifstream ifs(filename);
@@ -160,8 +160,8 @@ void fcm::readModel(char *filename, map<string, map<char, int>> &model)
 
     try
     {
-        this->k = stoi(line.substr(0, line.find(',')));
-        this->alpha = stod(line.substr(line.find(',') + 1));
+        orderM = stoi(line.substr(0, line.find(',')));
+        alphaM = stod(line.substr(line.find(',') + 1));
 
         // Read model from file
         while (!ifs.eof() && ifs.good())
@@ -169,19 +169,29 @@ void fcm::readModel(char *filename, map<string, map<char, int>> &model)
             getline(ifs, line);
 
             // Read context from line
-            string context = line.substr(0, line.find(':'));
+            string context = line.substr(0, line.find('\t'));
 
             // Read nextChars and counts from line
             map<char, int> nextChars;
-            line = line.substr(line.find(':') + 1);
+            line = line.substr(line.find('\t') + 1);
+
             while (line.find('\t') != string::npos)
             {
-                string nextChar = line.substr(line.find('\t') + 1, line.find('-') - line.find('\t') - 1);
+                string nextChar = line.substr(0, line.find('-'));
                 int count = stoi(line.substr(line.find('-') + 1, line.find('\t') - line.find('-') - 1));
 
                 nextChars[nextChar[0]] = count;
 
                 line = line.substr(line.find('\t') + 1);
+
+                // If last nextChar in line (no more tabs)
+                if (line.find('\t') == string::npos)
+                {
+                    string nextChar = line.substr(0, line.find('-'));
+                    int count = stoi(line.substr(line.find('-') + 1, line.find('\t') - line.find('-') - 1));
+                    
+                    nextChars[nextChar[0]] = count;
+                }
             }
 
             // Save context and nextChars in model
@@ -191,7 +201,7 @@ void fcm::readModel(char *filename, map<string, map<char, int>> &model)
     }
     catch (const exception &e)
     {
-        throw invalid_argument("\nERROR: The information in " + string(filename) + " is not correctly formatted! \nPlease use a valid text file\n");
+        throw invalid_argument("\nERROR: The information in " + string(filename) + " is not correctly formatted! \nPlease use a valid model text file\n");
     }
 }
 

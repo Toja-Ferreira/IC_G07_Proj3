@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
         if (s.length() > 1)
         {
-            cout << "Invalid option, please try again\n"
+            cout << "\nInvalid option, please try again\n"
                  << endl;
             continue;
         }
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
             }
 
             // Validate arguments
-            int valid = lang::validateInput(inputArgs);
+            int valid = lang::validateInput(inputArgs, 'F');
 
             if (valid == 1 || valid == 2 || valid == 3)
             {
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
             try
             {
                 lang lang(stoi(inputArgs.at(2)), stod(inputArgs.at(3)));
-                lang.compareToFile(&inputArgs.at(0)[0], &inputArgs.at(1)[0]);
+                lang.estimateBits(&inputArgs.at(0)[0], &inputArgs.at(1)[0], 'F');
             }
             catch (const exception &e)
             {
@@ -63,13 +63,12 @@ int main(int argc, char *argv[])
                 lang::printMenu();
                 continue;
             }
-
             return 0;
         }
 
         else if (op == '2')
         {
-            cout << "\nINPUT: <filepath_to_text_file> <filepath_to_model_file> <order_k> <smoothing_parameter>\n"
+            cout << "\nINPUT: <filepath_to_text_file> <filepath_to_model_file>\n"
                  << endl;
 
             cout << ">>> ";
@@ -87,9 +86,9 @@ int main(int argc, char *argv[])
             }
 
             // Validate arguments
-            int valid = lang::validateInput(inputArgs);
+            int valid = lang::validateInput(inputArgs, 'M');
 
-            if (valid == 1 || valid == 2 || valid == 3)
+            if (valid == 1)
             {
                 lang::printMenu();
                 continue;
@@ -98,8 +97,8 @@ int main(int argc, char *argv[])
             // Perform analysis
             try
             {
-                lang lang(stoi(inputArgs.at(2)), stod(inputArgs.at(3)));
-                lang.compareToModel(&inputArgs.at(0)[0], &inputArgs.at(1)[0]);
+                lang lang;
+                lang.estimateBits(&inputArgs.at(0)[0], &inputArgs.at(1)[0], 'M');
             }
             catch (const exception &e)
             {
@@ -108,7 +107,6 @@ int main(int argc, char *argv[])
                 lang::printMenu();
                 continue;
             }
-
             return 0;
         }
 
@@ -121,7 +119,7 @@ int main(int argc, char *argv[])
 
         else
         {
-            cout << "Invalid option, please try again\n"
+            cout << "\nInvalid option, please try again\n"
                  << endl;
             continue;
         }
