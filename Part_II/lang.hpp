@@ -101,7 +101,7 @@ class lang
                 << "Please choose an option:\n"
                 << "[1]: compare file with language file\n"
                 << "[2]: compare file with existing language model\n"
-                << "[q]: exit\n"
+                << "[q]: quit\n"
                 << endl;
         };
 };

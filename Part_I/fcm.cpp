@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <numeric>
+#include <algorithm>
 
 using namespace std;
 
@@ -41,7 +42,7 @@ void fcm::loadModel(char *filename, char toSave, map<string, map<char, int>> *em
     }
 
     cout << "\n-----------------------------------------------------------------------------\n"
-         << "Analysing file: " << filename << "\n"
+         << "Analysing file " << filename << " and generating model\n"
          << endl;
 
     // Initialize model in the form of <context, <next char, count>>
@@ -90,7 +91,7 @@ void fcm::loadModel(char *filename, char toSave, map<string, map<char, int>> *em
         context.second.erase(EOF);
     }
 
-    // Save model in empty model structure
+    // Save model in empty model structure (used by lang class)
     if (emptyModel)
     {
         *emptyModel = model;
@@ -119,10 +120,10 @@ void fcm::saveModel(char *filename, map<string, map<char, int>> model)
     ofstream outfile;
     outfile.open(newFileName, ofstream::trunc);
 
-    // Write parameters to file in the form <order k>,<alpha>
+    // Write parameters to file in the form: <order k>,<alpha>
     outfile << this->k << ',' << this->alpha;
 
-    // Write model to file in the form <context>   <next char>-<count>   <next char>-<count>
+    // Write model to file in the form: <context>   <next char>  <count>   <next char>    <count>
     for (auto context : model)
     {
         outfile << '\n'
@@ -130,7 +131,7 @@ void fcm::saveModel(char *filename, map<string, map<char, int>> model)
 
         for (auto nextChar : context.second)
         {
-            outfile << '\t' << nextChar.first << '-' << nextChar.second;
+            outfile << '\t' << nextChar.first << '\t' << nextChar.second;
         }
     }
     outfile.close();
@@ -160,6 +161,7 @@ void fcm::readModel(char *filename, map<string, map<char, int>> &model, int &ord
 
     try
     {
+        // Read order k and smoothing parameter alpha from line
         orderM = stoi(line.substr(0, line.find(',')));
         alphaM = stod(line.substr(line.find(',') + 1));
 
@@ -168,33 +170,29 @@ void fcm::readModel(char *filename, map<string, map<char, int>> &model, int &ord
         {
             getline(ifs, line);
 
-            // Read context from line
-            string context = line.substr(0, line.find('\t'));
-
-            // Read nextChars and counts from line
+            // Initialize map of next chars for each context
             map<char, int> nextChars;
+
+            // Read context and update line
+            string context = line.substr(0, line.find('\t'));
             line = line.substr(line.find('\t') + 1);
 
+            // Read remaining of line and update nextChars map
             while (line.find('\t') != string::npos)
             {
-                string nextChar = line.substr(0, line.find('-'));
-                int count = stoi(line.substr(line.find('-') + 1, line.find('\t') - line.find('-') - 1));
-
-                nextChars[nextChar[0]] = count;
-
+                // Read char and update line
+                string nextChar = line.substr(0, line.find('\t'));
                 line = line.substr(line.find('\t') + 1);
 
-                // If last nextChar in line (no more tabs)
-                if (line.find('\t') == string::npos)
-                {
-                    string nextChar = line.substr(0, line.find('-'));
-                    int count = stoi(line.substr(line.find('-') + 1, line.find('\t') - line.find('-') - 1));
-                    
-                    nextChars[nextChar[0]] = count;
-                }
+                // Read count and update line
+                int count = stoi(line.substr(0));
+                line = line.substr(line.find('\t') + 1);
+
+                // Update <char, count> occurrence in nextChars
+                nextChars[nextChar[0]] = count;
             }
 
-            // Save context and nextChars in model
+            // Save <context, nextChars> in model
             model[context] = nextChars;
         }
         ifs.close();

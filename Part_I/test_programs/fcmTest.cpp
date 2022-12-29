@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
          << "Please choose an option:\n"
          << "[1]: analyse file and save model in memory\n"
          << "[2]: analyse file without saving model\n"
-         << "[q]: exit\n"
+         << "[q]: quit\n"
          << endl;
 
     while (true)

@@ -44,8 +44,18 @@ double lang::estimateBits(char *filename, char *classFilename, char typeOfComp)
         throw invalid_argument("\nERROR: " + string(filename) + " is an empty file! \nPlease use a valid text file\n");
     }
 
-    cout << "Comparing the text with the newly generated language model\n"
-         << endl;
+    // Print message according to type of comparison
+    if (typeOfComp == 'M')
+    {
+        cout << "\n-----------------------------------------------------------------------------\n"
+             << "Comparing the text with the obtained language model\n"
+             << endl;
+    }
+    else
+    {
+        cout << "Comparing the text with the obtained language model\n"
+             << endl;
+    }
 
     // Initialize context according to order k
     string context = "";
@@ -59,43 +69,31 @@ double lang::estimateBits(char *filename, char *classFilename, char typeOfComp)
     // Read text file and compare with language model
     double estimatedEntropy = 0;
     int totalFileChars = 0;
-    int num = 0;
-    int totalNum = 0;
 
     while (!ifs.eof() && ifs.good())
     {
+        int num = 0;
+        int totalNum = 0;
+
         fcm::readChar(ifs, &nextChar);
 
         // Count total number of chars in file
         totalFileChars++;
 
-        totalNum = 0;
-
-        // Check model for existence of context
-        if (languageModel.count(context) == 0)
+        if (languageModel.count(context) > 0)
         {
-            num = 0;
-            totalNum = 0;
-        }
-        else
-        {
-            // Count total number of char occurrences in this context
-            for (auto &count : languageModel[context])
-            {
-                totalNum += count.second;
-            }
+            // Count total number of next character occurrences in this context
+            totalNum = accumulate(languageModel[context].begin(), languageModel[context].end(), 0, [](int sum, pair<char, int> p)
+                                  { return sum + p.second; });
 
-            // Check context for existance of nextChar
-            if (languageModel[context].count(nextChar) == 0)
-            {
-                num = 0;
-            }
-            else
+            // Check if nextChar exists in this context
+            if (languageModel[context].count(nextChar) > 0)
             {
                 num = languageModel[context][nextChar];
             }
         }
 
+        // Add entropy to total estimated entropy
         estimatedEntropy += -log2((num + this->alpha) / (totalNum + (this->alpha * ALPHABET_SIZE)));
 
         // Update context by removing its first char and appending next char
