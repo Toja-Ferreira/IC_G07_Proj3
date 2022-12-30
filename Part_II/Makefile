@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named findlangTest
+
+# Build rule for target.
+findlangTest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 findlangTest
+.PHONY : findlangTest
+
+# fast build rule for target.
+findlangTest/fast:
+	$(MAKE) -f CMakeFiles/findlangTest.dir/build.make CMakeFiles/findlangTest.dir/build
+.PHONY : findlangTest/fast
+
+#=============================================================================
 # Target rules for targets named langTest
 
 # Build rule for target.
@@ -122,6 +135,33 @@ langTest: cmake_check_build_system
 langTest/fast:
 	$(MAKE) -f CMakeFiles/langTest.dir/build.make CMakeFiles/langTest.dir/build
 .PHONY : langTest/fast
+
+test_programs/findlangTest.o: test_programs/findlangTest.cpp.o
+
+.PHONY : test_programs/findlangTest.o
+
+# target to build an object file
+test_programs/findlangTest.cpp.o:
+	$(MAKE) -f CMakeFiles/findlangTest.dir/build.make CMakeFiles/findlangTest.dir/test_programs/findlangTest.cpp.o
+.PHONY : test_programs/findlangTest.cpp.o
+
+test_programs/findlangTest.i: test_programs/findlangTest.cpp.i
+
+.PHONY : test_programs/findlangTest.i
+
+# target to preprocess a source file
+test_programs/findlangTest.cpp.i:
+	$(MAKE) -f CMakeFiles/findlangTest.dir/build.make CMakeFiles/findlangTest.dir/test_programs/findlangTest.cpp.i
+.PHONY : test_programs/findlangTest.cpp.i
+
+test_programs/findlangTest.s: test_programs/findlangTest.cpp.s
+
+.PHONY : test_programs/findlangTest.s
+
+# target to generate assembly for a file
+test_programs/findlangTest.cpp.s:
+	$(MAKE) -f CMakeFiles/findlangTest.dir/build.make CMakeFiles/findlangTest.dir/test_programs/findlangTest.cpp.s
+.PHONY : test_programs/findlangTest.cpp.s
 
 test_programs/langTest.o: test_programs/langTest.cpp.o
 
@@ -158,7 +198,11 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... findlangTest"
 	@echo "... langTest"
+	@echo "... test_programs/findlangTest.o"
+	@echo "... test_programs/findlangTest.i"
+	@echo "... test_programs/findlangTest.s"
 	@echo "... test_programs/langTest.o"
 	@echo "... test_programs/langTest.i"
 	@echo "... test_programs/langTest.s"
