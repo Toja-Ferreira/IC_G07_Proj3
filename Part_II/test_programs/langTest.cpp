@@ -5,7 +5,19 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    lang::printMenu();
+    if (argc != 3)
+    {
+        cerr << "\nERROR: Incorrect number of arguments!\n"
+             << "\nUsage: ./langTest <text_filepath> <language_filepath>\n"
+             << endl;
+        return 1;
+    }
+
+    cout << "\nWhich type of file are you using to represent the language?\n"
+         << "[1] text file\n"
+         << "[2] model file\n"
+         << "[q] quit\n"
+         << endl;
 
     while (true)
     {
@@ -24,88 +36,59 @@ int main(int argc, char *argv[])
 
         else if (op == '1')
         {
-            cout << "\nINPUT: <filepath_to_text_file> <filepath_to_language_file> <order_k> <smoothing_parameter>\n"
-                 << endl;
+            // Get value of model order k
+            cout << "\nValue of model order: ";
+            string ord;
+            getline(cin, ord);
 
-            cout << ">>> ";
-            string input;
-            getline(cin, input);
-
-            // Split input into arguments
-            vector<string> inputArgs;
-            string buf;
-            stringstream ss(input);
-
-            while (ss >> buf)
+            if (!fcm::isInteger(ord) || stoi(ord) <= 0)
             {
-                inputArgs.push_back(buf);
+                cerr << "\nERROR! Model order k must be a valid positive integer\n"
+                     << endl;
+                return 1;
             }
+            int k = stoi(ord);
 
-            // Validate arguments
-            int valid = lang::validateInput(inputArgs, 'F');
+            // Get value of smoothing parameter alpha
+            cout << "\nValue of smoothing parameter: ";
+            string alp;
+            getline(cin, alp);
 
-            if (valid == 1 || valid == 2 || valid == 3)
+            if (!fcm::isDecimal(alp) || stod(alp) <= 0)
             {
-                lang::printMenu();
-                continue;
+                cerr << "\nERROR! Smoothing parameter must be a valid positive number\n"
+                     << endl;
+                return 1;
             }
+            double alpha = stod(alp);
 
             // Perform analysis
             try
             {
-                lang lang(stoi(inputArgs.at(2)), stod(inputArgs.at(3)));
-                lang.estimateBits(&inputArgs.at(0)[0], &inputArgs.at(1)[0], 'F');
+                lang langObj(stoi(ord), stod(alp));
+                langObj.estimateBits(argv[1], argv[2], 'F');
+                return 0;
             }
             catch (const exception &e)
             {
                 cout << e.what() << endl;
-
-                lang::printMenu();
-                continue;
+                return 1;
             }
-            return 0;
         }
 
         else if (op == '2')
         {
-            cout << "\nINPUT: <filepath_to_text_file> <filepath_to_model_file>\n"
-                 << endl;
-
-            cout << ">>> ";
-            string input;
-            getline(cin, input);
-
-            // Split input into arguments
-            vector<string> inputArgs;
-            string buf;
-            stringstream ss(input);
-
-            while (ss >> buf)
-            {
-                inputArgs.push_back(buf);
-            }
-
-            // Validate arguments
-            int valid = lang::validateInput(inputArgs, 'M');
-
-            if (valid == 1)
-            {
-                lang::printMenu();
-                continue;
-            }
-
             // Perform analysis
             try
             {
-                lang lang;
-                lang.estimateBits(&inputArgs.at(0)[0], &inputArgs.at(1)[0], 'M');
+                lang langObj;
+                langObj.estimateBits(argv[1], argv[2], 'M');
+                return 0;
             }
             catch (const exception &e)
             {
                 cout << e.what() << endl;
-
-                lang::printMenu();
-                continue;
+                return 1;
             }
             return 0;
         }

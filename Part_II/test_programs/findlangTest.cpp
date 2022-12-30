@@ -6,13 +6,17 @@ int main(int argc, char *argv[])
 {
     if (argc < 3)
     {
-        cerr << "ERROR: Must provide at least one text file and one language/model file!\n"
-             << "Usage: ./findlangTest <text_filepath> <language_filepath1> [<language_filepath2> ....]\n"
+        cerr << "\nERROR: Incorrect number of arguments!\n"
+             << "\nUsage: ./findlangTest <text_filepath> <language_filepath1> [language_filepath2 language_filepath3 ...]\n"
              << endl;
         return 1;
     }
 
-    findlang::printMenu();
+    cout << "\nWhich type of files are you using to represent the languages?\n"
+         << "[1] text file\n"
+         << "[2] model file\n"
+         << "[q] quit\n"
+         << endl;
 
     while (true)
     {
@@ -24,7 +28,7 @@ int main(int argc, char *argv[])
 
         if (s.length() > 1)
         {
-            cout << "Invalid option, please try again\n"
+            cout << "\nInvalid option, please try again\n"
                  << endl;
             continue;
         }
@@ -64,6 +68,7 @@ int main(int argc, char *argv[])
                 languages.push_back(argv[i]);
             }
 
+            // Perform analysis
             try
             {
                 findlang findlangObj(k, alpha);
@@ -92,14 +97,15 @@ int main(int argc, char *argv[])
                 languages.push_back(argv[i]);
             }
 
+            // Perform analysis
             try
             {
                 findlang findlangObj;
                 string closest = findlangObj.estimateLanguage(argv[1], languages, 'M');
 
-                cout << "\n*******************************************************************************************************"
-                     << "\nClosest language to text is " << closest
-                     << "\n*******************************************************************************************************"
+                cout << "\n*****************************************************************************\n"
+                     << "\n Closest language to text is: " << closest << "\n"
+                     << "\n*****************************************************************************\n"
                      << endl;
 
                 return 0;

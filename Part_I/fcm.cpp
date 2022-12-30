@@ -123,7 +123,7 @@ void fcm::saveModel(char *filename, map<string, map<char, int>> model)
     // Write parameters to file in the form: <order k>,<alpha>
     outfile << this->k << ',' << this->alpha;
 
-    // Write model to file in the form: <context>   <next char>  <count>   <next char>    <count>
+    // Write model to file in the form: <context> (tab) <next char> (tab) <count> (tab) <next char> (tab) <count>
     for (auto context : model)
     {
         outfile << '\n'

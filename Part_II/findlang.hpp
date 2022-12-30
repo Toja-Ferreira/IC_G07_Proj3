@@ -32,18 +32,6 @@ class findlang
          * @return string containing the name of the language file that best represents the text file
          */
         string estimateLanguage(char *filename, vector<string> languages, char typeOfComp);
-
-        /**
-         * @brief Auxiliary function that prints the menu of the program
-         */
-        static void printMenu()
-        {
-            cout << "\nWhich type of files are you using to represent the languages?\n"
-                << "[1] text file\n"
-                << "[2] model file\n"
-                << "[q] quit\n"
-                << endl;
-        };
 };
 
 #endif

@@ -6,23 +6,24 @@ int main(int argc, char *argv[])
 {
     if (argc != 4)
     {
-        cerr << "ERROR: Usage: ./fcmTest <filepath> <order_k> <smoothing_parameter>\n"
+        cerr << "\nERROR: Incorrect number of arguments!\n"
+             << "\nUSAGE: ./fcmTest <filepath> <order_k> <smoothing_parameter>\n"
              << endl;
         return 1;
     }
 
     if (!fcm::isInteger(argv[2]) || stoi(argv[2]) <= 0)
     {
-        cerr << "ERROR! Model order k must be a valid positive integer\n"
-             << "USAGE: ./fcmTest <filepath> <order_k> <smoothing_parameter>\n"
+        cerr << "\nERROR: Model order k must be a valid positive integer!\n"
+             << "\nUSAGE: ./fcmTest <filepath> <order_k> <smoothing_parameter>\n"
              << endl;
         return 1;
     }
 
     if (!fcm::isDecimal(argv[3]) || stod(argv[3]) <= 0)
     {
-        cerr << "ERROR! Smoothing parameter must be a valid positive number\n"
-             << "USAGE: ./fcmTest <filepath> <order_k> <smoothing_parameter>\n"
+        cerr << "\nERROR! Smoothing parameter must be a valid positive number!\n"
+             << "\nUSAGE: ./fcmTest <filepath> <order_k> <smoothing_parameter>\n"
              << endl;
         return 1;
     }
@@ -46,7 +47,7 @@ int main(int argc, char *argv[])
 
         if (s.length() > 1)
         {
-            cout << "Invalid option, please try again\n"
+            cout << "\nInvalid option, please try again!\n"
                  << endl;
             continue;
         }
@@ -94,7 +95,7 @@ int main(int argc, char *argv[])
 
         else
         {
-            cout << "Invalid option, please try again\n"
+            cout << "\nInvalid option, please try again!\n"
                  << endl;
             continue;
         }
