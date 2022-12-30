@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named locatelangTest
+
+# Build rule for target.
+locatelangTest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 locatelangTest
+.PHONY : locatelangTest
+
+# fast build rule for target.
+locatelangTest/fast:
+	$(MAKE) -f CMakeFiles/locatelangTest.dir/build.make CMakeFiles/locatelangTest.dir/build
+.PHONY : locatelangTest/fast
+
+#=============================================================================
 # Target rules for targets named findlangTest
 
 # Build rule for target.
@@ -190,6 +203,33 @@ test_programs/langTest.cpp.s:
 	$(MAKE) -f CMakeFiles/langTest.dir/build.make CMakeFiles/langTest.dir/test_programs/langTest.cpp.s
 .PHONY : test_programs/langTest.cpp.s
 
+test_programs/locatelangTest.o: test_programs/locatelangTest.cpp.o
+
+.PHONY : test_programs/locatelangTest.o
+
+# target to build an object file
+test_programs/locatelangTest.cpp.o:
+	$(MAKE) -f CMakeFiles/locatelangTest.dir/build.make CMakeFiles/locatelangTest.dir/test_programs/locatelangTest.cpp.o
+.PHONY : test_programs/locatelangTest.cpp.o
+
+test_programs/locatelangTest.i: test_programs/locatelangTest.cpp.i
+
+.PHONY : test_programs/locatelangTest.i
+
+# target to preprocess a source file
+test_programs/locatelangTest.cpp.i:
+	$(MAKE) -f CMakeFiles/locatelangTest.dir/build.make CMakeFiles/locatelangTest.dir/test_programs/locatelangTest.cpp.i
+.PHONY : test_programs/locatelangTest.cpp.i
+
+test_programs/locatelangTest.s: test_programs/locatelangTest.cpp.s
+
+.PHONY : test_programs/locatelangTest.s
+
+# target to generate assembly for a file
+test_programs/locatelangTest.cpp.s:
+	$(MAKE) -f CMakeFiles/locatelangTest.dir/build.make CMakeFiles/locatelangTest.dir/test_programs/locatelangTest.cpp.s
+.PHONY : test_programs/locatelangTest.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -198,6 +238,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... locatelangTest"
 	@echo "... findlangTest"
 	@echo "... langTest"
 	@echo "... test_programs/findlangTest.o"
@@ -206,6 +247,9 @@ help:
 	@echo "... test_programs/langTest.o"
 	@echo "... test_programs/langTest.i"
 	@echo "... test_programs/langTest.s"
+	@echo "... test_programs/locatelangTest.o"
+	@echo "... test_programs/locatelangTest.i"
+	@echo "... test_programs/locatelangTest.s"
 .PHONY : help
 
 

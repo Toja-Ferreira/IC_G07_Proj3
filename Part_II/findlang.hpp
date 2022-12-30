@@ -17,7 +17,7 @@ class findlang
         findlang();
 
         /**
-         * Lang class constructor
+         * findlang class constructor
          * @param k order of the finite-context model to be used by the lang object
          * @param alpha smoothing parameter of the finite-context model to be used by the lang object
          */
