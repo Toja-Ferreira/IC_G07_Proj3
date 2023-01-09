@@ -1,16 +1,18 @@
-#ifndef LOCATELANG_H
-#define LOCATELANG_H
+#ifndef LOCATELANG_HPP
+#define LOCATELANG_HPP
 
-#include "findlang.cpp"
+#include <cmath>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
-using namespace std;
-
-class locatelang
-{
-    public:
-        locatelang();
-
-
+class locatelang {
+ public:
+  virtual double predict_char_proba(const char& c) = 0;
 };
 
-#endif
+std::string locatelang(const std::string& text, const std::vector<LanguageModel*>& models);
+
+double combine_models(const std::vector<LanguageModel*>& models, const char& c);
+
+#endif  // LOCATELANG_HPP
