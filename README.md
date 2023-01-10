@@ -22,4 +22,4 @@ Parte II do projeto localizada na pasta [**Part_II**](Part_II): <br>
          * ./findlangTest <text_filepath> <language_filepath1> [language_filepath2 language_filepath3 ...]	-> testar programa findlang
   <br>
 
-Part III do projeto contida no relatório [**IC_G07_Proj3.pdf**](IC_G07_Proj3.pdf) 
+Part III do projeto contida no relatório [**IC_G07_Proj3.pdf**](IC_G07_Proj3.pdf) e no video demonstrativo [**demo.mp4**](demo.mp4) 
